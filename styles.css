@@ -1,0 +1,64 @@
+input.monthDsp {
+    background-color: rgba(0, 0, 0, 0);
+    border-style: none;
+    color: #FFFFFF;
+    font-size: 16px;
+    text-align: center;
+    max-width: 120px;
+}
+
+.datepickerdropdown {
+    position: fixed;
+    z-index:1;
+}
+
+input.selected_month,input.selected_year {
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    font-size: 20;
+    font-weight: bold;
+    border-style: none;
+    cursor: pointer;
+}
+
+input.selected_month:hover,input.selected_year:hover {
+    color: red;
+}
+
+
+tr.daysRow {
+    text-align: center;
+}
+
+.days_box {
+    width: 40;
+    height: 40;
+    border-radius: 40px;
+    border-color: whitesmoke;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #CECECE;
+    border-style: none;
+}
+.days_box:hover {
+    background-color: #2196F3;
+    color : #FFFFFF;
+    cursor: pointer;
+}
+input.othermonth.days_box.days_box {
+    background-color: #444444;
+    color: dimgrey;
+}
+
+
+i.fa.fa-calendar-check-o.calender_icon {
+    font-size: 21px;
+    position: relative;
+    top: 2;
+    left: 5;
+    cursor: pointer;
+}
+
+i.fa.fa-calendar-check-o.calender_icon:hover {
+    color:red;
+}
