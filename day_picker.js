@@ -1,15 +1,23 @@
 function getDateString(dt) {
-    return dt.getFullYear() + '-' + (dt.getMonth()+1) + '-' + dt.getDate()
+output = dt.getFullYear() + '-' + ((dt.getMonth()+1)<10 ? '0' : '') + (dt.getMonth()+1) + '-' +  (dt.getDate()<10 ? '0' : '') + dt.getDate();
+    return output
 }
 
 
 function getMonthYearString(dt) {
-    return ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-            'August', 'September', 'October', 'November', 'December'
-        ][dt.getMonth()] +
-        ' ' + dt.getFullYear();
+    return ['01.January', '02.February', '03.March', '04.April', '05.May', '06.June', '07.July',
+            '08.August', '09.September', '10.October', '11.November', '12.December'][dt.getMonth()]+' '+dt.getFullYear();
 }
 
+function closeCalendar(e) {
+    var targ; 
+    if (!e) var e = window.event;
+    if (e.target) targ = e.target;
+    else if (e.srcElement) targ = e.srcElement;
+
+    if(targ.parentNode)
+        targ.parentNode.removeChild(targ);
+}
 
 function chooseDate(e) {
     var targ; 
@@ -25,8 +33,17 @@ function chooseDate(e) {
         createCalendar(div, new Date(targ.getAttribute('date')));
         return;
     }
-    textbox.value = targ.getAttribute('date'); 
-    div.parentNode.removeChild(div); 
+
+    // textbox's event has to be in the 'onblur'.
+    textbox.focus();
+    textbox.value = targ.getAttribute('date');
+    textbox.blur();
+
+    div.parentNode.removeChild(div);
+
+    // console.log(textbox);
+    // console.log(textbox.value);
+    // setTimeout(function(){ textbox.blur(); }, 500);
 }
 
 
@@ -35,15 +52,15 @@ function parseMyDate(d) {
     var a = d.split('-');
     if (a.length != 3) return new Date(d); 
     var m = -1; 
-    if (a[1] == '1') m = 0;
-    if (a[1] == '2') m = 1;
-    if (a[1] == '3') m = 2;
-    if (a[1] == '4') m = 3;
-    if (a[1] == '5') m = 4;
-    if (a[1] == '6') m = 5;
-    if (a[1] == '7') m = 6;
-    if (a[1] == '8') m = 7;
-    if (a[1] == '9') m = 8;
+    if (a[1] == '01') m = 0;
+    if (a[1] == '02') m = 1;
+    if (a[1] == '03') m = 2;
+    if (a[1] == '04') m = 3;
+    if (a[1] == '05') m = 4;
+    if (a[1] == '06') m = 5;
+    if (a[1] == '07') m = 6;
+    if (a[1] == '08') m = 7;
+    if (a[1] == '09') m = 8;
     if (a[1] == '10') m = 9;
     if (a[1] == '11') m = 10;
     if (a[1] == '12') m = 11;
@@ -53,6 +70,7 @@ function parseMyDate(d) {
 
 
 function createCalendar(div, month) {
+
     var idOfTextbox = div.getAttribute('datepickertextbox'); 
     var textbox = document.getElementById(idOfTextbox); 
     var tbl = document.createElement('table');
@@ -113,7 +131,7 @@ function createCalendar(div, month) {
     daysRow.insertCell(-1).innerHTML = "Sat";
     daysRow.insertCell(-1).innerHTML = "Sun";
     daysRow.className = 'daysRow';
-    
+
     var selected = parseMyDate(textbox.value); 
     var today = new Date();
     date = new Date(month.getFullYear(), month.getMonth(), 1, 0, 0, 0, 0); 
@@ -144,6 +162,10 @@ function createCalendar(div, month) {
             }else{
                 if (inp.className) inp.className += ' ';
                 inp.className += 'days_box';
+            }
+
+            if (date.getDay() == 0 || date.getDay() == 6){
+                inp.className += ' weekend';
             }
             date.setDate(date.getDate() + 1); 
         }
@@ -177,9 +199,12 @@ function showDatePicker(idOfTextbox) {
     var div = document.createElement('div');
     div.className = 'datepickerdropdown';
     div.setAttribute('datepickertextbox', idOfTextbox); 
+
+    // Close calendar.
+    div.onmouseleave = closeCalendar;
     createCalendar(div, date); 
     insertAfter(div, textbox); 
-    return false;
+    return div;
 }
 
 
@@ -190,3 +215,6 @@ function insertAfter(newItem, existingItem) {
         existingItem.parentNode.appendChild(newItem);
     }
 }
+
+
+
